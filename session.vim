@@ -171,11 +171,11 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 27) / 55)
+let s:l = 15 - ((14 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
+15
 normal! 0
 tabnext
 edit grid.c
@@ -191,8 +191,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 118 + 119) / 238)
-exe 'vert 2resize ' . ((&columns * 119 + 119) / 238)
+exe 'vert 1resize ' . ((&columns * 116 + 119) / 238)
+exe 'vert 2resize ' . ((&columns * 121 + 119) / 238)
 argglobal
 1argu
 setlocal keymap=
@@ -319,12 +319,12 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 5 - ((4 * winheight(0) + 27) / 54)
+let s:l = 3 - ((2 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-5
-normal! 042|
+3
+normal! 0
 wincmd w
 argglobal
 1argu
@@ -453,15 +453,15 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 27) / 54)
+let s:l = 11 - ((0 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
-normal! 0
+11
+normal! 05|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 118 + 119) / 238)
-exe 'vert 2resize ' . ((&columns * 119 + 119) / 238)
+exe 'vert 1resize ' . ((&columns * 116 + 119) / 238)
+exe 'vert 2resize ' . ((&columns * 121 + 119) / 238)
 tabnext
 edit vect.c
 set splitbelow splitright
@@ -476,8 +476,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 118 + 119) / 238)
-exe 'vert 2resize ' . ((&columns * 119 + 119) / 238)
+exe 'vert 1resize ' . ((&columns * 115 + 119) / 238)
+exe 'vert 2resize ' . ((&columns * 122 + 119) / 238)
 argglobal
 3argu
 setlocal keymap=
@@ -743,10 +743,10 @@ if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 1
-normal! 09|
+normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 118 + 119) / 238)
-exe 'vert 2resize ' . ((&columns * 119 + 119) / 238)
+exe 'vert 1resize ' . ((&columns * 115 + 119) / 238)
+exe 'vert 2resize ' . ((&columns * 122 + 119) / 238)
 tabnext
 edit makefile
 set splitbelow splitright
@@ -884,20 +884,20 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 27) / 55)
+let s:l = 3 - ((2 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
+3
 normal! 0
-tabnext 4
+tabnext 1
 set stal=1
 badd +1 grid.c
 badd +1 main.c
 badd +1 vect.c
+badd +1 makefile
 badd +1 grid.h
-badd +0 vect.h
-badd +0 makefile
+badd +1 vect.h
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0
   silent exe 'bwipe ' . s:wipebuf
 endif
@@ -909,7 +909,6 @@ if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)
 endif
 let &so = s:so_save | let &siso = s:siso_save
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
