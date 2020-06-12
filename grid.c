@@ -7,7 +7,6 @@ unsigned int toIndex(Grid* grid, int x, int y)
 	return (grid->width*y + x)%grid->size;
 }
 
-
 void clearGrid(Grid* grid)
 {
 	for (int i = 0; i < grid->size; i++) grid->arr[i]=false;
