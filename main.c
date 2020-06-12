@@ -1,14 +1,21 @@
 #include <stdio.h>
-#include <stdbool.h>
 #include <ncurses.h>
 #include <unistd.h>
 #include <math.h>
+#include <signal.h>
 #include "grid.h"
 #include "vect.h"
 
-void contain(int* pos, int* velocity, int min, int max);
+static volatile int running = 1;
+
+static void contain(int* pos, int* velocity, int min, int max);
+// if ^C is pressed, set running flag to false 
+static void signalHandler(int sig);
+
 int main()
 { 
+	signal(SIGINT, signalHandler);
+	int count = 0; 
 	//init 
 	initscr();
 	//noecho();
@@ -29,9 +36,7 @@ int main()
 	initGrid(&grid, width, height);
 	putPixel(&grid, pos.x, pos.y);
 
-	while (1) {
-		clear();
-
+	while (running) {
 		clearGrid(&grid);
 		putPixel(&grid, pos.x, pos.y);
 		drawGrid(&grid);
@@ -49,7 +54,7 @@ int main()
 	return 0;
 }
 
-void contain(int* pos, int* velocity, int min, int max)
+static void contain(int* pos, int* velocity, int min, int max)
 {
 	bool above_max = max < *pos;
 	bool below_min = *pos < min;
@@ -59,4 +64,10 @@ void contain(int* pos, int* velocity, int min, int max)
 		else if (above_max) *pos = max;
 		*velocity *= -1;
 	}
+}
+
+static void signalHandler(int sig)
+{
+	printf("interrupt\n");
+	running = 0;
 }
