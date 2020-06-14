@@ -1,6 +1,13 @@
 #include <stdlib.h>
 #include "grid.h"
 
+void initGrid(Grid* grid, unsigned int width, unsigned int height)
+{
+	grid->size = width*height;
+	grid->width = width;
+	grid->arr = (bool*)malloc(sizeof(bool)*grid->size);
+}
+
 // maps x, y coordinate to array index of grid
 unsigned int toIndex(Grid* grid, int x, int y)
 {
@@ -12,11 +19,16 @@ void clearGrid(Grid* grid)
 	for (int i = 0; i < grid->size; i++) grid->arr[i]=false;
 }
 
-void initGrid(Grid* grid, unsigned int width, unsigned int height)
+void updateGrid(Grid* grid)
 {
-	grid->size = width*height;
-	grid->width = width;
-	grid->arr = (bool*)malloc(sizeof(bool)*grid->size);
+	unsigned int width = grid->width;
+	unsigned int height = grid->size/width;
+
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+
+		}
+	}
 }
 
 void putPixel(Grid* grid, int x, int y)

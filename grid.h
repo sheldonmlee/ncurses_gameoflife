@@ -12,7 +12,11 @@ typedef struct Grid {
 
 void initGrid(Grid* grid, unsigned int width, unsigned int height);
 
+unsigned int toIndex(Grid* grid, int x, int y);
+
 void clearGrid(Grid* grid);
+
+void updateGrid(Grid* grid);
 
 void putPixel(Grid* grid, int x, int y);
 
