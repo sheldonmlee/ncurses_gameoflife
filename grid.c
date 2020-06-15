@@ -1,22 +1,73 @@
 #include <stdlib.h>
+#include <time.h>
 #include "grid.h"
 
 void initGrid(Grid* grid, unsigned int width, unsigned int height)
 {
 	grid->size = width*height;
 	grid->width = width;
-	grid->arr = (bool*)malloc(sizeof(bool)*grid->size);
+	grid->state = (bool*)malloc(sizeof(bool)*grid->size);
+	grid->next_state = (bool*)malloc(sizeof(bool)*grid->size);
 }
 
+void randomizeGrid(Grid* grid)
+{
+	srand(time(NULL));
+	for (int i = 0; i < grid->size; i++) {
+		grid->state[i] = rand()%2;
+	}
+}
 // maps x, y coordinate to array index of grid
 unsigned int toIndex(Grid* grid, int x, int y)
 {
 	return (grid->width*y + x)%grid->size;
 }
 
+bool getPixel(Grid* grid, int x, int y)
+{
+	return grid->state[toIndex(grid, x, y)];
+}
+
 void clearGrid(Grid* grid)
 {
-	for (int i = 0; i < grid->size; i++) grid->arr[i]=false;
+	for (int i = 0; i < grid->size; i++) grid->state[i]=false;
+}
+
+// check if cell's next state is alive
+static bool isAliveNext(Grid* grid, int x, int y)
+{
+	bool nw	= getPixel(grid, x-1, y-1);
+	bool n 	= getPixel(grid, x, y-1);
+	bool ne	= getPixel(grid, x+1, y-1);
+	bool w	= getPixel(grid, x-1, y);
+	bool e	= getPixel(grid, x+1, y);
+	bool sw	= getPixel(grid, x-1, y+1);
+	bool s	= getPixel(grid, x, y+1);
+	bool se	= getPixel(grid, x+1, y+1);
+
+	bool currentlyAlive = grid->state[toIndex(grid, x, y)];
+
+	const int no_neighbors = 8;
+	bool neighbors[] = {
+		nw,	n,	ne,
+		w,		e,
+		sw,	s,	se
+	};
+
+	int alive_neighbors = 0;
+	for (int i = 0; i < no_neighbors; i++) {
+		alive_neighbors += neighbors[i];
+	}
+	// rules
+	if (currentlyAlive) {
+		if (alive_neighbors == 2 || alive_neighbors == 3) {
+			return true;
+		}
+	}
+	else if (alive_neighbors == 3) {
+		return true;
+	}
+	return false;
 }
 
 void updateGrid(Grid* grid)
@@ -26,14 +77,18 @@ void updateGrid(Grid* grid)
 
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
-
+			grid->next_state[toIndex(grid, x, y)] = isAliveNext(grid, x, y);
 		}
+	}
+
+	for (int i = 0; i < grid->size; i++) {
+		grid->state[i] = grid->next_state[i];
 	}
 }
 
 void putPixel(Grid* grid, int x, int y)
 {
-	grid->arr[toIndex(grid, x, y)] = true;
+	grid->state[toIndex(grid, x, y)] = true;
 }
 
 void drawGrid(Grid* grid)
@@ -43,7 +98,7 @@ void drawGrid(Grid* grid)
 	height = grid->size/width;
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
-			if (grid->arr[toIndex(grid, x, y)]) mvprintw(y, x, "x");
+			if (grid->state[toIndex(grid, x, y)]) mvprintw(y, x, "x");
 			else mvprintw(y, x, " ");
 		}
 	}
