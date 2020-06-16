@@ -27,27 +27,19 @@ int main()
 	// stdscr created by initscr()
 	getmaxyx(stdscr, height, width);
 
-	Vect2i pos = {0, 0};
-	Vect2i vel = {1, 1};
-
 	//hz
-	const int FRAME_RATE = 30;
+	const int FRAME_RATE = 10;
 
 	const int DELAY = (float)pow(10,6)/(float)FRAME_RATE;
 
 	Grid grid;
 	initGrid(&grid, width, height);
 	randomizeGrid(&grid);
-	putPixel(&grid, pos.x, pos.y);
 
 	while (running) {
 		drawGrid(&grid);
 
 		refresh();
-
-		//moveVect2i(&pos, vel.x, vel.y);
-		//contain(&pos.x, &vel.x, 0, width-1);
-		//contain(&pos.y, &vel.y, 0, height-1);
 
 		updateGrid(&grid);
 

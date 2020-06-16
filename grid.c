@@ -98,7 +98,7 @@ void drawGrid(Grid* grid)
 	height = grid->size/width;
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
-			if (grid->state[toIndex(grid, x, y)]) mvprintw(y, x, "x");
+			if (grid->state[toIndex(grid, x, y)]) mvprintw(y, x, "X");
 			else mvprintw(y, x, " ");
 		}
 	}
