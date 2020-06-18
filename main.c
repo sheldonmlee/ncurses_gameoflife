@@ -6,9 +6,6 @@
 #include "grid.h"
 #include "vect.h"
 
-
-static void contain(int* pos, int* velocity, int min, int max);
-
 int main()
 { 
 	// init 
@@ -63,14 +60,3 @@ int main()
 	return 0;
 }
 
-static void contain(int* pos, int* velocity, int min, int max)
-{
-	bool above_max = max < *pos;
-	bool below_min = *pos < min;
-	bool not_in_range =  below_min || above_max;
-	if (not_in_range) {
-		if (below_min) *pos = min;
-		else if (above_max) *pos = max;
-		*velocity *= -1;
-	}
-}
