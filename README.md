@@ -1,6 +1,6 @@
 # ncurses_gameoflife 
-Small program to simulate Conway's Game of Life.
+Small program to simulate Conway's Game of Life, using ncurses.
 
-Grid handles drawing of pixels.
+Press 'q' to quit.
 
-Vect handles 2d vectors.
+
