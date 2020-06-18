@@ -2,33 +2,32 @@
 #include <ncurses.h>
 #include <unistd.h>
 #include <math.h>
-#include <signal.h>
+#include <time.h>
 #include "grid.h"
 #include "vect.h"
 
-static volatile int running = 1;
 
 static void contain(int* pos, int* velocity, int min, int max);
-// if ^C is pressed, set running flag to false 
-static void signalHandler(int sig);
 
 int main()
 { 
-	signal(SIGINT, signalHandler);
-	int count = 0; 
-	//init 
+	// init 
+	bool running = true;
 	initscr();
-	//noecho();
-	
+	raw();
+	// doesn't wait for user to input.
+	// timeout(100) waits for 100ms for input.
+	timeout(0); 	
 	curs_set(FALSE);
+
 	int width = 0;
 	int height = 0;
 
-	// stdscr created by initscr()
+	// stdscr is screen created by initscr()
 	getmaxyx(stdscr, height, width);
 
-	//hz
-	const int FRAME_RATE = 10;
+	// hz
+	const int FRAME_RATE = 100;
 
 	const int DELAY = (float)pow(10,6)/(float)FRAME_RATE;
 
@@ -36,12 +35,18 @@ int main()
 	initGrid(&grid, width, height);
 	randomizeGrid(&grid);
 
+	clock_t t = 0;
 	while (running) {
+		clock_t start_t = clock();
+		char ch = getch();
+		if (ch == 'q') running = false;  
+
 		drawGrid(&grid);
 
 		refresh();
 
 		updateGrid(&grid);
+		t += clock()-start_t;
 
 		usleep(DELAY);
 	}
@@ -60,10 +65,4 @@ static void contain(int* pos, int* velocity, int min, int max)
 		else if (above_max) *pos = max;
 		*velocity *= -1;
 	}
-}
-
-static void signalHandler(int sig)
-{
-	printf("interrupt\n");
-	running = 0;
 }
