@@ -96,10 +96,16 @@ void drawGrid(Grid* grid)
 	unsigned int width, height;
 	width = grid->width;
 	height = grid->size/width;
+	// Init color pair init_pair(index, fg, bg);
+	init_pair(1, COLOR_BLUE, COLOR_WHITE);
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
-			if (grid->state[toIndex(grid, x, y)]) mvprintw(y, x, "X");
-			else mvprintw(y, x, " ");
+			if (grid->state[toIndex(grid, x, y)]){
+				attron(COLOR_PAIR(1));
+				mvaddch(y, x, ' ');
+				attroff(COLOR_PAIR(1));
+			}
+			else mvaddch(y, x, ' ');
 		}
 	}
 }
