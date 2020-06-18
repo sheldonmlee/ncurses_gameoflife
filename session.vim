@@ -19,6 +19,7 @@ set smartindent
 set suffixes=.bak,~,.o,.info,.swp,.aux,.bbl,.blg,.brf,.cb,.dvi,.idx,.ilg,.ind,.inx,.jpg,.log,.out,.png,.toc
 set tabstop=4
 set undodir=~/.cache/vim/undo//
+set window=55
 let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 let v:this_session=expand("<sfile>:p")
 silent only
@@ -178,12 +179,12 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 27) / 55)
+let s:l = 49 - ((48 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
-normal! 0
+49
+normal! 029|
 tabnext
 edit grid.c
 set splitbelow splitright
@@ -604,11 +605,11 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 27) / 55)
+let s:l = 3 - ((2 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
+3
 normal! 0
 tabnext
 edit vect.h
@@ -894,14 +895,14 @@ exe s:l
 normal! zt
 1
 normal! 0
-tabnext 4
+tabnext 1
 set stal=1
 badd +1 grid.c
-badd +0 main.c
+badd +1 main.c
 badd +0 vect.c
-badd +0 grid.h
-badd +0 vect.h
-badd +0 makefile
+badd +1 grid.h
+badd +1 vect.h
+badd +1 makefile
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0
   silent exe 'bwipe ' . s:wipebuf
 endif
@@ -913,7 +914,6 @@ if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)
 endif
 let &so = s:so_save | let &siso = s:siso_save
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
