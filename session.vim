@@ -179,12 +179,12 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 49 - ((48 * winheight(0) + 27) / 54)
+let s:l = 1 - ((0 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-49
-normal! 029|
+1
+normal! 0
 tabnext
 edit grid.c
 set splitbelow splitright
@@ -321,12 +321,12 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 27) / 55)
+let s:l = 41 - ((17 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
-normal! 0
+41
+normal! 035|
 tabnext
 edit grid.h
 set splitbelow splitright
@@ -463,7 +463,7 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 27) / 55)
+let s:l = 1 - ((0 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -605,11 +605,11 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 3 - ((2 * winheight(0) + 27) / 55)
+let s:l = 1 - ((0 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-3
+1
 normal! 0
 tabnext
 edit vect.h
@@ -895,14 +895,16 @@ exe s:l
 normal! zt
 1
 normal! 0
-tabnext 1
+tabnext 2
 set stal=1
-badd +1 grid.c
+badd +0 grid.c
 badd +1 main.c
-badd +0 vect.c
+badd +1 vect.c
 badd +1 grid.h
 badd +1 vect.h
 badd +1 makefile
+badd +17 ~/.vimrc
+badd +1 ~/.vimrs
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0
   silent exe 'bwipe ' . s:wipebuf
 endif
