@@ -97,7 +97,6 @@ void drawGrid(Grid* grid)
 	width = grid->width;
 	height = grid->size/width;
 	// Init color pair init_pair(index, fg, bg);
-	init_pair(1, COLOR_BLUE, COLOR_WHITE);
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
 			if (grid->state[toIndex(grid, x, y)]){
