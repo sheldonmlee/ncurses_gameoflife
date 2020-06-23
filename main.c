@@ -96,7 +96,9 @@ void showLastPressed(char ch)
 
 void showCurPos()
 {
+	attron(COLOR_PAIR(2));
 	mvprintw(1, 0, "curpos: %i, %i", cursor.x, cursor.y);
+	attroff(COLOR_PAIR(2));
 }
 
 void handleInput(char ch)
