@@ -7,16 +7,21 @@
 #include "vect.h"
 
 static bool running = true;
+static bool do_step = true;
+static Vect2i cursor = {0, 0};
 
 void handleInput(char ch);
 
 void showLastPressed(char ch);
+
+void showCurPos();
 
 int main()
 { 
 	// init 
 	initscr();
 	raw();
+	noecho();
 	
 	// Colors
 	// allows for transparancy when color values in init_pair(); are set to -1 or, no pair specified
@@ -27,6 +32,8 @@ int main()
 	init_pair(1, COLOR_BLUE, COLOR_WHITE);
 	// text
 	init_pair(2, COLOR_YELLOW, -1);
+	// cursor
+	init_pair(3, COLOR_RED, COLOR_RED);
 
 	// doesn't wait for user to input.
 	// timeout(100) waits for 100ms for input.
@@ -40,12 +47,13 @@ int main()
 	getmaxyx(stdscr, height, width);
 
 	// framerate of the game 
-	const int FRAME_RATE = 144;
+	const int FRAME_RATE = 30;
 	const float FRAME_TIME = 1.f/(float)FRAME_RATE;
 
 	Grid grid;
 	initGrid(&grid, width, height);
 	randomizeGrid(&grid);
+
 
 	float t = 0;
 	while (running) {
@@ -57,12 +65,16 @@ int main()
 		// draw grid
 		drawGrid(&grid);
 		// draw overlays
-		attron(COLOR_PAIR(2));
 		showLastPressed(ch);
-		attroff(COLOR_PAIR(2));
+		showCurPos();
+		// cursor
+		attron(COLOR_PAIR(3));
+		mvaddch(cursor.y, cursor.x, ' ');
+		attroff(COLOR_PAIR(3));
+
 
 		refresh();
-		updateGrid(&grid);
+		if (do_step) updateGrid(&grid);
 
 		usleep(pow(10,6)*(FRAME_TIME-t));
 		float t = (float) (clock()-start_t) / (float) CLOCKS_PER_SEC;
@@ -77,9 +89,37 @@ void showLastPressed(char ch)
 {
 	static char lastc = ' ';
 	if (ch != -1) lastc = ch;
-	mvprintw(0, 0, "LastPressed: %c", lastc);
+	attron(COLOR_PAIR(2));
+	mvprintw(0, 0, "Last Pressed: %c", lastc);
+	attroff(COLOR_PAIR(2));
 }
+
+void showCurPos()
+{
+	mvprintw(1, 0, "curpos: %i, %i", cursor.x, cursor.y);
+}
+
 void handleInput(char ch)
 {
-	if (ch == 'q') running = false;  
+	switch (ch) {
+		case 'q':
+			running = false;
+			break;
+		case ' ':
+			do_step ^= 1;
+			break;
+		case 'h':
+			moveVect2i(&cursor, -1, 0);
+			break;
+		case 'j':
+			moveVect2i(&cursor, 0, 1);
+			break;
+		case 'k':
+			moveVect2i(&cursor, 0, -1);
+			break;
+		case 'l':
+			moveVect2i(&cursor, 1, 0);
+			break;
+	}
+	
 }
