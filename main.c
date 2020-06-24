@@ -6,8 +6,6 @@
 #include <math.h>
 // game
 #include "game.h"
-#include "grid.h"
-#include "vect.h"
 
 
 int main()
