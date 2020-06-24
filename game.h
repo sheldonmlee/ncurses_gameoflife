@@ -7,12 +7,19 @@ void initGame();
 
 bool isRunning();
 
+void updateGame();
+
+void drawGame();
+
 void handleInput(char ch);
 
-// Overlay
+// Overlays
 // Draws cursor and cursor position
+void showLastPressed(char ch);
+
 void showCurPos();
 
 bool endgame();
 
 #endif
+

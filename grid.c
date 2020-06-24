@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <time.h>
+#include <ncurses.h>
 #include "grid.h"
 
 void initGrid(Grid* grid, unsigned int width, unsigned int height)
@@ -108,3 +109,4 @@ void drawGrid(Grid* grid)
 		}
 	}
 }
+

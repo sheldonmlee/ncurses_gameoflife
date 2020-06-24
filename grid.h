@@ -1,5 +1,4 @@
 #include <stdbool.h>
-#include <ncurses.h>
 
 #ifndef GRID_H
 #define GRID_H
@@ -28,3 +27,4 @@ void putPixel(Grid* grid, int x, int y);
 void drawGrid(Grid* grid);
 
 #endif
+

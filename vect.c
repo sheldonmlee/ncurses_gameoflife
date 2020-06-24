@@ -12,3 +12,4 @@ void moveVect2f(Vect2f* vect, float x, float y)
 	vect->x += x;
 	vect->y += y;
 }
+

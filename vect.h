@@ -14,3 +14,4 @@ void moveVect2i(Vect2i* vect, int x, int y);
 void moveVect2f(Vect2f* vect, float x, float y);
 
 #endif
+
