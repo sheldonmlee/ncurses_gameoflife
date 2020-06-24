@@ -15,9 +15,9 @@ void handleInput(char ch);
 
 // Overlays
 // Draws cursor and cursor position
-void showLastPressed(char ch);
+void drawLastPressed(char ch);
 
-void showCurPos();
+void drawCurPos();
 
 bool endgame();
 

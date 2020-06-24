@@ -36,7 +36,7 @@ int main()
 	const int FRAME_RATE = 30;
 	const float FRAME_TIME = 1.f/(float)FRAME_RATE;
 
-	//initGame();
+	initGame();
 
 	float t = 0;
 	while (isRunning()) {
@@ -45,9 +45,13 @@ int main()
 
 		handleInput(ch);
 
-		//drawGame();
+		drawGame();
+		drawLastPressed(ch);
+		drawCurPos();
+
+		refresh();
 		
-		//updateGame();
+		updateGame();
 
 		usleep(pow(10,6)*(FRAME_TIME-t));
 		float t = (float) (clock()-start_t) / (float) CLOCKS_PER_SEC;

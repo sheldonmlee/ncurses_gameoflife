@@ -3,12 +3,17 @@
 #include <ncurses.h>
 #include "grid.h"
 
-void initGrid(Grid* grid, unsigned int width, unsigned int height)
+// locally used declaration
+static bool isAliveNext(Grid* grid, int x, int y);
+
+Grid* initGrid(unsigned int width, unsigned int height)
 {
+	Grid* grid = (Grid*)malloc(sizeof(Grid));
 	grid->size = width*height;
 	grid->width = width;
 	grid->state = (bool*)malloc(sizeof(bool)*grid->size);
 	grid->next_state = (bool*)malloc(sizeof(bool)*grid->size);
+	return grid;
 }
 
 void randomizeGrid(Grid* grid)
@@ -34,6 +39,46 @@ void clearGrid(Grid* grid)
 	for (int i = 0; i < grid->size; i++) grid->state[i]=false;
 }
 
+void updateGrid(Grid* grid)
+{
+	unsigned int width = grid->width;
+	unsigned int height = grid->size/width;
+
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			grid->next_state[toIndex(grid, x, y)] = isAliveNext(grid, x, y);
+		}
+	}
+
+	for (int i = 0; i < grid->size; i++) {
+		grid->state[i] = grid->next_state[i];
+	}
+}
+
+void setPixel(Grid* grid, int x, int y, bool on)
+{
+	grid->state[toIndex(grid, x, y)] = on;
+}
+
+void drawGrid(Grid* grid)
+{
+	unsigned int width, height;
+	width = grid->width;
+	height = grid->size/width;
+	// Init color pair init_pair(index, fg, bg);
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			if (grid->state[toIndex(grid, x, y)]){
+				attron(COLOR_PAIR(1));
+				mvaddch(y, x, ' ');
+				attroff(COLOR_PAIR(1));
+			}
+			else mvaddch(y, x, ' ');
+		}
+	}
+}
+
+// locally used
 // check if cell's next state is alive
 static bool isAliveNext(Grid* grid, int x, int y)
 {
@@ -69,44 +114,5 @@ static bool isAliveNext(Grid* grid, int x, int y)
 		return true;
 	}
 	return false;
-}
-
-void updateGrid(Grid* grid)
-{
-	unsigned int width = grid->width;
-	unsigned int height = grid->size/width;
-
-	for (int y = 0; y < height; y++) {
-		for (int x = 0; x < width; x++) {
-			grid->next_state[toIndex(grid, x, y)] = isAliveNext(grid, x, y);
-		}
-	}
-
-	for (int i = 0; i < grid->size; i++) {
-		grid->state[i] = grid->next_state[i];
-	}
-}
-
-void putPixel(Grid* grid, int x, int y)
-{
-	grid->state[toIndex(grid, x, y)] = true;
-}
-
-void drawGrid(Grid* grid)
-{
-	unsigned int width, height;
-	width = grid->width;
-	height = grid->size/width;
-	// Init color pair init_pair(index, fg, bg);
-	for (int y = 0; y < height; y++) {
-		for (int x = 0; x < width; x++) {
-			if (grid->state[toIndex(grid, x, y)]){
-				attron(COLOR_PAIR(1));
-				mvaddch(y, x, ' ');
-				attroff(COLOR_PAIR(1));
-			}
-			else mvaddch(y, x, ' ');
-		}
-	}
 }
 

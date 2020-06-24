@@ -10,7 +10,7 @@ typedef struct Grid {
 	bool* next_state;
 } Grid;
 
-void initGrid(Grid* grid, unsigned int width, unsigned int height);
+Grid* initGrid(unsigned int width, unsigned int height);
 
 void randomizeGrid(Grid* grid);
 
@@ -22,7 +22,7 @@ void clearGrid(Grid* grid);
 
 void updateGrid(Grid* grid);
 
-void putPixel(Grid* grid, int x, int y);
+void setPixel(Grid* grid, int x, int y, bool on);
 
 void drawGrid(Grid* grid);
 

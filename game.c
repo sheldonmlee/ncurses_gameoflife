@@ -6,8 +6,14 @@
 static Grid* grid = 0;
 
 static bool running = true;
+static bool stepping_mode = false;
 static bool do_step = true;
 static Vect2i cursor;
+
+// declaration of locally used
+static void toggleStepMode();
+
+static void toggleCell();
 
 void initGame()
 {
@@ -15,28 +21,29 @@ void initGame()
 	int height = 0;
 	// stdscr is screen created by initscr()
 	getmaxyx(stdscr, height, width);
-
-	initGrid(grid, height, width);
+	
+	grid = initGrid(width, height);
 	randomizeGrid(grid);
 	cursor.x = width/2; cursor.y = height/2;
 }
 
-static void step() { do_step ^= 1; }
-
 void updateGame()
 {
 	if (!grid) return;
-	if (do_step) updateGrid(grid);
+	if (do_step) {
+		updateGrid(grid);
+		if (stepping_mode) do_step = false;
+	}
 }
 
 void drawGame()
 {
 	if (!grid) return;
 	drawGrid(grid);
-	refresh();
 }
 
 bool isRunning() { return running; }
+
 
 void handleInput(char ch)
 {
@@ -45,7 +52,7 @@ void handleInput(char ch)
 		running = false;
 		break;
 	case ' ':
-		do_step ^= 1;
+		toggleStepMode();
 		break;
 	case 'h':
 		moveVect2i(&cursor, -1, 0);
@@ -59,13 +66,18 @@ void handleInput(char ch)
 	case 'l':
 		moveVect2i(&cursor, 1, 0);
 		break;
-	case 's':
-		step();
+	case '\n':
+		do_step = true;
 		break;
+	case 'i':
+		toggleCell();
+		break;
+	default:
+		if (ch != -1) do_step = true;
 	}
 }
 
-void showLastPressed(char ch)
+void drawLastPressed(char ch)
 {
 	static char lastc = ' ';
 	if (ch != -1) lastc = ch;
@@ -74,16 +86,33 @@ void showLastPressed(char ch)
 	attroff(COLOR_PAIR(2));
 }
 
-void showCurPos()
+void drawCurPos()
 {
 	attron(COLOR_PAIR(2));
 	mvprintw(1, 0, "curpos: %i, %i", cursor.x, cursor.y);
+	attroff(COLOR_PAIR(2));
 	attron(COLOR_PAIR(3));
 	mvaddch(cursor.y, cursor.x, ' ');
 	attroff(COLOR_PAIR(3));
-	attroff(COLOR_PAIR(2));
 }
 
 void endGame()
 {
+	// free stuff
+}
+
+// locally used
+static void toggleStepMode()
+{
+	stepping_mode ^= 1;
+	do_step = true;
+}
+
+static void toggleCell()
+{
+	if (!grid) return;
+	bool cell = getPixel(grid, cursor.x, cursor.y);
+	if (cell) setPixel(grid, cursor.x, cursor.y, 0);
+	else setPixel(grid, cursor.x, cursor.y, 1);
+
 }
