@@ -1,20 +1,17 @@
-#include <stdio.h>
 #include <ncurses.h>
+// Delay and timing.
 #include <unistd.h>
-#include <math.h>
 #include <time.h>
+// math
+#include <math.h>
+
+// game
+#include "game.h"
 #include "grid.h"
 #include "vect.h"
 
-static bool running = true;
-static bool do_step = true;
-static Vect2i cursor = {0, 0};
-
-void handleInput(char ch);
 
 void showLastPressed(char ch);
-
-void showCurPos();
 
 int main()
 { 
@@ -56,7 +53,7 @@ int main()
 
 
 	float t = 0;
-	while (running) {
+	while (isRunning()) {
 		clock_t start_t = clock();
 		char ch = getch();
 
@@ -67,14 +64,9 @@ int main()
 		// draw overlays
 		showLastPressed(ch);
 		showCurPos();
-		// cursor
-		attron(COLOR_PAIR(3));
-		mvaddch(cursor.y, cursor.x, ' ');
-		attroff(COLOR_PAIR(3));
-
 
 		refresh();
-		if (do_step) updateGrid(&grid);
+		if (true) updateGrid(&grid);
 
 		usleep(pow(10,6)*(FRAME_TIME-t));
 		float t = (float) (clock()-start_t) / (float) CLOCKS_PER_SEC;
@@ -94,34 +86,3 @@ void showLastPressed(char ch)
 	attroff(COLOR_PAIR(2));
 }
 
-void showCurPos()
-{
-	attron(COLOR_PAIR(2));
-	mvprintw(1, 0, "curpos: %i, %i", cursor.x, cursor.y);
-	attroff(COLOR_PAIR(2));
-}
-
-void handleInput(char ch)
-{
-	switch (ch) {
-		case 'q':
-			running = false;
-			break;
-		case ' ':
-			do_step ^= 1;
-			break;
-		case 'h':
-			moveVect2i(&cursor, -1, 0);
-			break;
-		case 'j':
-			moveVect2i(&cursor, 0, 1);
-			break;
-		case 'k':
-			moveVect2i(&cursor, 0, -1);
-			break;
-		case 'l':
-			moveVect2i(&cursor, 1, 0);
-			break;
-	}
-	
-}
