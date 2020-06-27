@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <ncurses.h>
 // Delay and timing.
 #include <unistd.h>
@@ -10,25 +11,6 @@
 
 int main()
 { 
-	// init 
-	initscr();
-	raw();
-	noecho();
-	// Colors
-	// allows for transparancy when color values in init_pair(); are set to -1 or, no pair specified
-	// e.g init_pair(1, COLOR_WHITE, -1) would be transparent background but white text
-	use_default_colors();
-	start_color();
-	// cell
-	init_pair(1, COLOR_BLUE, COLOR_WHITE);
-	// text
-	init_pair(2, COLOR_YELLOW, -1);
-	// cursor
-	init_pair(3, COLOR_RED, COLOR_RED);
-	// doesn't wait for user to input.
-	// timeout(100) waits for 100ms for input.
-	timeout(0); 	
-	curs_set(FALSE);
 
 	// framerate of the game 
 	const int FRAME_RATE = 30;
@@ -56,7 +38,7 @@ int main()
 
 	}
 
-	endwin();
+	endGame();
 	return 0;
 }
 
