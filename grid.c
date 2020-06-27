@@ -1,6 +1,7 @@
+#include <stdio.h>
+#include <ncurses.h>
 #include <stdlib.h>
 #include <time.h>
-#include <ncurses.h>
 #include "grid.h"
 
 // locally used declaration
@@ -78,6 +79,13 @@ void drawGrid(Grid* grid)
 	}
 }
 
+void destroyGrid(Grid* grid)
+{
+	free(grid->state);
+	free(grid->next_state);
+	free(grid);
+	printf("Grid destroyed\n");
+}
 // locally used
 // check if cell's next state is alive
 static bool isAliveNext(Grid* grid, int x, int y)

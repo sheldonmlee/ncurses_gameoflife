@@ -10,6 +10,7 @@ typedef struct Grid {
 	bool* next_state;
 } Grid;
 
+// inits grid and returns pointer to grid. Remember to use Destroy Grid to deallocate
 Grid* initGrid(unsigned int width, unsigned int height);
 
 void randomizeGrid(Grid* grid);
@@ -25,6 +26,8 @@ void updateGrid(Grid* grid);
 void setPixel(Grid* grid, int x, int y, bool on);
 
 void drawGrid(Grid* grid);
+
+void destroyGrid(Grid* grid);
 
 #endif
 
