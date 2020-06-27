@@ -19,7 +19,7 @@ void drawLastPressed(char ch);
 
 void drawCurPos();
 
-bool endgame();
+void endGame();
 
 #endif
 

@@ -17,13 +17,33 @@ static void toggleCell();
 
 void initGame()
 {
+	// init 
+	initscr();
+	raw();
+	noecho();
+	// Colors
+	// allows for transparancy when color values in init_pair(); are set to -1 or, no pair specified
+	// e.g init_pair(1, COLOR_WHITE, -1) would be transparent background but white text
+	use_default_colors();
+	start_color();
+	// cell
+	init_pair(1, COLOR_BLUE, COLOR_WHITE);
+	// text
+	init_pair(2, COLOR_YELLOW, -1);
+	// cursor
+	init_pair(3, COLOR_RED, COLOR_RED);
+	// doesn't wait for user to input.
+	// timeout(100) waits for 100ms for input.
+	timeout(0); 	
+	curs_set(FALSE);
+
 	int width = 0;
 	int height = 0;
 	// stdscr is screen created by initscr()
 	getmaxyx(stdscr, height, width);
 	
 	grid = initGrid(width, height);
-	randomizeGrid(grid);
+	//randomizeGrid(grid);
 	cursor.x = width/2; cursor.y = height/2;
 }
 
@@ -66,6 +86,12 @@ void handleInput(char ch)
 	case 'l':
 		moveVect2i(&cursor, 1, 0);
 		break;
+	case 'r':
+		randomizeGrid(grid);
+		break;
+	case 'c':
+		clearGrid(grid);
+		break;
 	case '\n':
 		do_step = true;
 		break;
@@ -99,6 +125,9 @@ void drawCurPos()
 void endGame()
 {
 	// free stuff
+	endwin();
+	destroyGrid(grid);
+	printf("game destroyed\n");
 }
 
 // locally used
