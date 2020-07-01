@@ -24,10 +24,25 @@ void randomizeGrid(Grid* grid)
 		grid->state[i] = rand()%2;
 	}
 }
+
+static void contain(int* num, int min, int max)
+{
+	int delta = max - min;
+	while (true) {
+		if (*num < min) *num += delta;
+		else if (*num >= max) *num -= delta;
+		else break;
+	}
+}
 // maps x, y coordinate to array index of grid
 unsigned int toIndex(Grid* grid, int x, int y)
 {
-	return (grid->width*y + x)%grid->size;
+	unsigned int width, height;
+	width = grid->width;
+	height = grid->size/width;
+	contain(&x, 0, width);
+	contain(&y, 0, height);
+	return (grid->width*y + x);
 }
 
 bool getPixel(Grid* grid, int x, int y)
@@ -84,7 +99,6 @@ void destroyGrid(Grid* grid)
 	free(grid->state);
 	free(grid->next_state);
 	free(grid);
-	printf("Grid destroyed\n");
 }
 // locally used
 // check if cell's next state is alive

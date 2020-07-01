@@ -127,7 +127,6 @@ void endGame()
 	// free stuff
 	endwin();
 	destroyGrid(grid);
-	printf("game destroyed\n");
 }
 
 // locally used

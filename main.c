@@ -7,6 +7,7 @@
 #include <math.h>
 // game
 #include "game.h"
+#include "log.h"
 
 
 int main()
@@ -15,6 +16,7 @@ int main()
 	// framerate of the game 
 	const int FRAME_RATE = 30;
 	const float FRAME_TIME = 1.f/(float)FRAME_RATE;
+	startLog("log.txt");
 
 	initGame();
 
@@ -39,6 +41,7 @@ int main()
 	}
 
 	endGame();
+	endLog();
 	return 0;
 }
 
