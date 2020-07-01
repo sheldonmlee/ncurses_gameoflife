@@ -18,5 +18,6 @@ void logLine(char* string)
 
 void endLog()
 {
+	if (!file) return;
 	fclose(file);
 }
