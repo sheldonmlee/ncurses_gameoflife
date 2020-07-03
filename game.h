@@ -19,6 +19,10 @@ void drawLastPressed(char ch);
 
 void drawCurPos();
 
+void saveGame(char* name);
+
+void loadGame(char* name);
+
 void endGame();
 
 #endif

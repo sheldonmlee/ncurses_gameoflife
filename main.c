@@ -12,7 +12,6 @@
 
 int main()
 { 
-
 	// framerate of the game 
 	const int FRAME_RATE = 30;
 	const float FRAME_TIME = 1.f/(float)FRAME_RATE;
@@ -37,8 +36,9 @@ int main()
 
 		usleep(pow(10,6)*(FRAME_TIME-t));
 		float t = (float) (clock()-start_t) / (float) CLOCKS_PER_SEC;
-
 	}
+
+	saveGame("test.txt");
 
 	endGame();
 	endLog();

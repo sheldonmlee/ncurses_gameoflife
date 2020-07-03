@@ -2,6 +2,7 @@
 #include "game.h"
 #include "grid.h"
 #include "vect.h"
+#include "log.h"
 
 static Grid* grid = 0;
 
@@ -120,6 +121,28 @@ void drawCurPos()
 	attron(COLOR_PAIR(3));
 	mvaddch(cursor.y, cursor.x, ' ');
 	attroff(COLOR_PAIR(3));
+}
+
+void saveGame(char* name)
+{
+	unsigned int width, height;
+	getDimensions(grid, &width, &height);
+
+	FILE* file = fopen(name, "w");
+	
+	if (file) {
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				fprintf(file, "%i", getPixel(grid, x, y));
+			}
+			fprintf(file, "\n");
+		}
+		fclose(file);
+	}
+}
+
+void loadGame(char* name)
+{
 }
 
 void endGame()
