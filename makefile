@@ -1,5 +1,7 @@
 LDFLAGS=-lncurses
+CC=gcc
+
 
 main: *.c
-	gcc *.c -o main ${LDFLAGS}
+	$(CC) *.c -o main ${LDFLAGS}
 
