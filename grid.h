@@ -19,6 +19,8 @@ unsigned int toIndex(Grid* grid, int x, int y);
 
 bool getPixel(Grid* grid, int x, int y);
 
+void getDimensions(Grid* grid, unsigned int* width, unsigned int* height);
+
 void clearGrid(Grid* grid);
 
 void updateGrid(Grid* grid);

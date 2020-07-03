@@ -38,8 +38,7 @@ static void contain(int* num, int min, int max)
 unsigned int toIndex(Grid* grid, int x, int y)
 {
 	unsigned int width, height;
-	width = grid->width;
-	height = grid->size/width;
+	getDimensions(grid, &width, &height);
 	contain(&x, 0, width);
 	contain(&y, 0, height);
 	return (grid->width*y + x);
@@ -50,6 +49,12 @@ bool getPixel(Grid* grid, int x, int y)
 	return grid->state[toIndex(grid, x, y)];
 }
 
+void getDimensions(Grid* grid, unsigned int* width, unsigned int* height)
+{
+	*width = grid->width;
+	*height = grid->size/grid->width;
+}
+
 void clearGrid(Grid* grid)
 {
 	for (int i = 0; i < grid->size; i++) grid->state[i]=false;
@@ -57,9 +62,8 @@ void clearGrid(Grid* grid)
 
 void updateGrid(Grid* grid)
 {
-	unsigned int width = grid->width;
-	unsigned int height = grid->size/width;
-
+	unsigned int width, height;
+	getDimensions(grid, &width, &height);
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
 			grid->next_state[toIndex(grid, x, y)] = isAliveNext(grid, x, y);
@@ -79,8 +83,7 @@ void setPixel(Grid* grid, int x, int y, bool on)
 void drawGrid(Grid* grid)
 {
 	unsigned int width, height;
-	width = grid->width;
-	height = grid->size/width;
+	getDimensions(grid, &width, &height);
 	// Init color pair init_pair(index, fg, bg);
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
