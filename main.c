@@ -18,6 +18,7 @@ int main()
 	startLog("log.txt");
 
 	initGame();
+	loadGame("test.txt");
 
 	float t = 0;
 	while (isRunning()) {
@@ -35,7 +36,7 @@ int main()
 		updateGame();
 
 		usleep(pow(10,6)*(FRAME_TIME-t));
-		float t = (float) (clock()-start_t) / (float) CLOCKS_PER_SEC;
+		t = (float) (clock()-start_t) / (float) CLOCKS_PER_SEC;
 	}
 
 	saveGame("test.txt");

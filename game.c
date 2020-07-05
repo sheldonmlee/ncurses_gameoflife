@@ -1,4 +1,5 @@
 #include <ncurses.h>
+#include <stdlib.h>
 #include "game.h"
 #include "grid.h"
 #include "vect.h"
@@ -15,6 +16,10 @@ static Vect2i cursor;
 static void toggleStepMode();
 
 static void toggleCell();
+
+int min (int a, int b);
+
+int max (int a, int b);
 
 void initGame()
 {
@@ -128,14 +133,16 @@ void saveGame(char* name)
 	unsigned int width, height;
 	getDimensions(grid, &width, &height);
 
-	FILE* file = fopen(name, "w");
 	
+	FILE* file = NULL;
+	file = fopen(name, "w");
+	
+	fprintf(file, "%c%c", width, height);
 	if (file) {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				fprintf(file, "%i", getPixel(grid, x, y));
 			}
-			fprintf(file, "\n");
 		}
 		fclose(file);
 	}
@@ -143,6 +150,37 @@ void saveGame(char* name)
 
 void loadGame(char* name)
 {
+	FILE* file = NULL;
+	file = fopen(name, "r");
+	if (!file) return;
+	
+	if (!grid) initGame();
+	else clearGrid(grid);
+	
+	unsigned int width, height;
+	bool* pixels;
+	int count = 0;
+	char c;
+	while((c = fgetc(file)) != EOF) {
+		if (count == 0) width = (int)c; 
+		else if (count == 1) height = (int)c; 
+		else {
+			unsigned int size = width * height;
+			pixels = (bool*)malloc(sizeof(char)*size);
+			pixels[count-2] = (c == '0');
+		}
+		count++;
+	}
+
+	unsigned int grid_width, grid_height;
+	getDimensions(grid, &grid_width, &grid_height);
+	for (int y =0; y < min(grid_height, height); y++) {
+		for (int x =0; x < min(grid_width, width); x++) {
+
+		}
+	}
+		
+	fclose(file);
 }
 
 void endGame()
@@ -166,4 +204,16 @@ static void toggleCell()
 	if (cell) setPixel(grid, cursor.x, cursor.y, 0);
 	else setPixel(grid, cursor.x, cursor.y, 1);
 
+}
+
+int min(int a, int b)
+{
+	if (a <= b) return a;
+	else return b;
+}
+
+int max(int a, int b)
+{
+	if (a >= b) return a;
+	else return b;
 }
