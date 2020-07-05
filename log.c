@@ -9,6 +9,12 @@ void startLog(char* filename)
 	file = fopen(filename, "w");
 }
 
+void logString(char* string)
+{
+	if (!file) return;
+	fputs(string, file);
+}
+
 void logLine(char* string)
 {
 	if (!file) return;

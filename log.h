@@ -3,6 +3,8 @@
 
 void startLog(char* filename);
 
+void logString(char* string);
+
 void logLine(char* string);
 
 void endLog();
