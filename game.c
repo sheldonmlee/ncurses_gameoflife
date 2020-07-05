@@ -104,6 +104,12 @@ void handleInput(char ch)
 	case 'i':
 		toggleCell();
 		break;
+	case 'e':
+		loadGame("test.txt");
+		break;
+	case 'w':
+		saveGame("test.txt");
+		break;
 	default:
 		if (ch != -1) do_step = true;
 	}
@@ -161,14 +167,14 @@ void loadGame(char* name)
 	bool* pixels;
 	int count = 0;
 	char c;
+	unsigned int size;
+
+	width = (unsigned int)fgetc(file); height = (unsigned int)fgetc(file); 
+	size = width * height;
+	pixels = (bool*)malloc(sizeof(char)*size);
+	
 	while((c = fgetc(file)) != EOF) {
-		if (count == 0) width = (int)c; 
-		else if (count == 1) height = (int)c; 
-		else {
-			unsigned int size = width * height;
-			pixels = (bool*)malloc(sizeof(char)*size);
-			pixels[count-2] = (c == '0');
-		}
+		pixels[count] = (c == '1');
 		count++;
 	}
 
@@ -176,9 +182,11 @@ void loadGame(char* name)
 	getDimensions(grid, &grid_width, &grid_height);
 	for (int y =0; y < min(grid_height, height); y++) {
 		for (int x =0; x < min(grid_width, width); x++) {
-
+			int index = y * width + x;
+			setPixel(grid, x, y, pixels[index]);
 		}
 	}
+	free(pixels);
 		
 	fclose(file);
 }

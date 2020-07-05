@@ -18,7 +18,6 @@ int main()
 	startLog("log.txt");
 
 	initGame();
-	loadGame("test.txt");
 
 	float t = 0;
 	while (isRunning()) {
@@ -39,7 +38,7 @@ int main()
 		t = (float) (clock()-start_t) / (float) CLOCKS_PER_SEC;
 	}
 
-	saveGame("test.txt");
+	logLine("oof");
 
 	endGame();
 	endLog();
