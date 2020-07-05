@@ -51,6 +51,7 @@ bool getPixel(Grid* grid, int x, int y)
 
 void getDimensions(Grid* grid, unsigned int* width, unsigned int* height)
 {
+	if (grid->size == 0) return;
 	*width = grid->width;
 	*height = grid->size/grid->width;
 }
