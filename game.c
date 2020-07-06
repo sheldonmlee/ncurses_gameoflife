@@ -136,48 +136,42 @@ void drawCurPos()
 
 void saveGame(char* name)
 {
-	unsigned int width, height;
-	getDimensions(grid, &width, &height);
-
-	
 	FILE* file = NULL;
 	file = fopen(name, "w");
-	
-	fprintf(file, "%c%c", width, height);
-	if (file) {
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				fprintf(file, "%i", getPixel(grid, x, y));
-			}
-		}
-		fclose(file);
+	if (!file) {
+		logLine("Failed to write file.");
+		return;
 	}
+	
+	unsigned int dimensions[2] = {grid->width, grid->size};
+	fwrite(dimensions, sizeof(dimensions), 1, file);
+	fwrite(grid->state, sizeof(bool), grid->size, file);
+
+	fclose(file);
 }
 
 void loadGame(char* name)
 {
 	FILE* file = NULL;
 	file = fopen(name, "r");
-	if (!file) return;
+	if (!file) {
+		logLine("Failed to load file.");
+		return;
+	}
 	
 	if (!grid) initGame();
 	else clearGrid(grid);
 	
-	unsigned int width, height;
+	unsigned int width, height, size;
 	bool* pixels;
-	int count = 0;
-	char c;
-	unsigned int size;
 
-	width = (unsigned int)fgetc(file); height = (unsigned int)fgetc(file); 
-	size = width * height;
-	pixels = (bool*)malloc(sizeof(char)*size);
+	fread(&width, sizeof(unsigned int), 1, file);
+	fread(&size, sizeof(unsigned int), 1, file);
+	height = size/width;
+	pixels = (bool*)malloc(sizeof(bool)*size);
+	fread(pixels, sizeof(bool), size, file);
+
 	
-	while((c = fgetc(file)) != EOF) {
-		pixels[count] = (c == '1');
-		count++;
-	}
-
 	unsigned int grid_width, grid_height;
 	getDimensions(grid, &grid_width, &grid_height);
 	for (int y =0; y < min(grid_height, height); y++) {
