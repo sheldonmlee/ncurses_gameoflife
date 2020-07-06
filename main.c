@@ -38,8 +38,6 @@ int main()
 		t = (float) (clock()-start_t) / (float) CLOCKS_PER_SEC;
 	}
 
-	logLine("oof");
-
 	endGame();
 	endLog();
 	return 0;
