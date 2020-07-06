@@ -74,12 +74,7 @@ bool isRunning() { return running; }
 void handleInput(char ch)
 {
 	switch (ch) {
-	case 'q':
-		running = false;
-		break;
-	case ' ':
-		toggleStepMode();
-		break;
+	// {{{ movement
 	case 'h':
 		moveVect2i(&cursor, -1, 0);
 		break;
@@ -92,26 +87,48 @@ void handleInput(char ch)
 	case 'l':
 		moveVect2i(&cursor, 1, 0);
 		break;
+	case 'H':
+		moveVect2i(&cursor, -10, 0);
+		break;
+	case 'J':
+		moveVect2i(&cursor, 0, 10);
+		break;
+	case 'K':
+		moveVect2i(&cursor, 0, -10);
+		break;
+	case 'L':
+		moveVect2i(&cursor, 10, 0);
+		break;
+	// }}}
+	// {{{ Cell
 	case 'r':
 		randomizeGrid(grid);
 		break;
 	case 'c':
 		clearGrid(grid);
 		break;
-	case '\n':
-		do_step = true;
-		break;
 	case 'i':
 		toggleCell();
 		break;
+	// }}}
+	// {{{ game load/save
 	case 'e':
 		loadGame("test.txt");
 		break;
 	case 'w':
 		saveGame("test.txt");
 		break;
+	// }}}
+	// {{{ flow
+	case 'q':
+		running = false;
+		break;
+	case ' ':
+		toggleStepMode();
+		break;
 	default:
 		if (ch != -1) do_step = true;
+	// }}}
 	}
 }
 
@@ -165,14 +182,16 @@ void loadGame(char* name)
 	unsigned int width, height, size;
 	bool* pixels;
 
+	// read data frrom file
 	fread(&width, sizeof(unsigned int), 1, file);
 	fread(&size, sizeof(unsigned int), 1, file);
 	height = size/width;
 	pixels = (bool*)malloc(sizeof(bool)*size);
 	fread(pixels, sizeof(bool), size, file);
 
-	
 	unsigned int grid_width, grid_height;
+
+	// map & copy new pixels array to current grid
 	getDimensions(grid, &grid_width, &grid_height);
 	for (int y =0; y < min(grid_height, height); y++) {
 		for (int x =0; x < min(grid_width, width); x++) {
