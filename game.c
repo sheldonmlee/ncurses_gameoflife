@@ -4,6 +4,7 @@
 #include "grid.h"
 #include "vect.h"
 #include "log.h"
+#include "ui.h"
 
 static Grid* grid = 0;
 
@@ -47,6 +48,9 @@ void initGame()
 	int height = 0;
 	// stdscr is screen created by initscr()
 	getmaxyx(stdscr, height, width);
+
+	addLinei("x:", &cursor.x);
+	addLinei("y:", &cursor.y);
 	
 	grid = initGrid(width, height);
 	//randomizeGrid(grid);
@@ -143,9 +147,6 @@ void drawLastPressed(char ch)
 
 void drawCurPos()
 {
-	attron(COLOR_PAIR(2));
-	mvprintw(1, 0, "curpos: %i, %i", cursor.x, cursor.y);
-	attroff(COLOR_PAIR(2));
 	attron(COLOR_PAIR(3));
 	mvaddch(cursor.y, cursor.x, ' ');
 	attroff(COLOR_PAIR(3));

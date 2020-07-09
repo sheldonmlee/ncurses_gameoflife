@@ -8,6 +8,7 @@
 // game
 #include "game.h"
 #include "log.h"
+#include "ui.h"
 
 
 int main()
@@ -15,8 +16,8 @@ int main()
 	// framerate of the game 
 	const int FRAME_RATE = 30;
 	const float FRAME_TIME = 1.f/(float)FRAME_RATE;
-	startLog("log.txt");
 
+	startLog("log.txt");
 	initGame();
 
 	float t = 0;
@@ -27,8 +28,9 @@ int main()
 		handleInput(ch);
 
 		drawGame();
-		drawLastPressed(ch);
+		//drawLastPressed(ch);
 		drawCurPos();
+		drawUI();
 
 		refresh();
 		
@@ -38,6 +40,7 @@ int main()
 		t = (float) (clock()-start_t) / (float) CLOCKS_PER_SEC;
 	}
 
+	endUI();
 	endGame();
 	endLog();
 	return 0;
