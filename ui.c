@@ -5,7 +5,10 @@
 
 typedef struct {
 	char* msg;
-	int* var;
+	void* var;
+	size_t size;
+	ui_type type;
+
 }Linei;
 
 static unsigned int ln_count = 0;
@@ -14,7 +17,7 @@ static Linei* lines = NULL;
 
 static void startUI();
 
-void addLinei(char* msg, int* var)
+void addLinei(char* msg, void* var, int size, ui_type type) 
 {
 	if (!lines) startUI();
 	else lines = realloc(lines, sizeof(Linei) * ++ln_count);

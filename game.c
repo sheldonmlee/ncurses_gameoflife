@@ -49,8 +49,8 @@ void initGame()
 	// stdscr is screen created by initscr()
 	getmaxyx(stdscr, height, width);
 
-	addLinei("x:", &cursor.x);
-	addLinei("y:", &cursor.y);
+	addLinei("x:", &cursor.x, 1, UI_INT);
+	addLinei("y:", &cursor.y, 1, UI_INT);
 	
 	grid = initGrid(width, height);
 	//randomizeGrid(grid);
